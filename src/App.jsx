@@ -1,108 +1,112 @@
 import { useMemo, useState } from 'react';
 
-const topics = [
+const topicCards = [
   {
     id: 'mechanics',
     title: 'Mechanics',
-    description: 'Motion, forces, momentum, and energy in action.',
+    summary: 'Motion, forces, and energy in motion.',
     accent: 'cyan',
-    lessons: ['Kinematics', 'Newton’s Laws', 'Work & Energy', 'Momentum'],
+    lessons: ['Velocity & acceleration', 'Newton’s laws', 'Work, power, energy'],
   },
   {
     id: 'electricity',
     title: 'Electricity',
-    description: 'Circuits, resistance, and electrical relationships.',
+    summary: 'Circuits, voltage, current, and power.',
     accent: 'violet',
-    lessons: ['Ohm’s Law', 'Series Circuits', 'Parallel Circuits', 'Power'],
+    lessons: ['Ohm’s law', 'Series & parallel', 'Resistance & power'],
   },
   {
     id: 'waves',
     title: 'Waves',
-    description: 'Sound, light, interference, and resonance.',
+    summary: 'Sound, light, and wave behavior.',
     accent: 'amber',
-    lessons: ['Frequency', 'Amplitude', 'Interference', 'Resonance'],
+    lessons: ['Frequency & amplitude', 'Wave speed', 'Interference & resonance'],
   },
   {
     id: 'optics',
     title: 'Optics',
-    description: 'Reflection, refraction, lenses, and image formation.',
+    summary: 'Lenses, images, color, and refraction.',
     accent: 'pink',
-    lessons: ['Lens Formula', 'Color', 'Reflection', 'Refraction'],
+    lessons: ['Reflection', 'Refraction', 'Magnification & lenses'],
   },
   {
     id: 'thermo',
     title: 'Thermodynamics',
-    description: 'Heat flow, temperature, and energy transfer.',
+    summary: 'Heat transfer and energy balance.',
     accent: 'green',
-    lessons: ['Heat Transfer', 'Phase Change', 'Entropy', 'Gas Laws'],
+    lessons: ['Temperature', 'Specific heat', 'Heat engines'],
   },
   {
     id: 'modern',
     title: 'Modern Physics',
-    description: 'Atoms, radioactivity, and quantum concepts.',
+    summary: 'Atoms, radioactivity, and quantum ideas.',
     accent: 'red',
-    lessons: ['Photoelectric Effect', 'Radioactivity', 'Atoms', 'Nuclear Energy'],
+    lessons: ['Atomic models', 'Nuclear energy', 'Photoelectric effect'],
   },
 ];
 
-const labs = [
-  { id: 'motion', label: 'Motion Lab', color: 'cyan' },
-  { id: 'forces', label: 'Forces Lab', color: 'violet' },
-  { id: 'waves', label: 'Wave Lab', color: 'amber' },
-  { id: 'electricity', label: 'Circuit Lab', color: 'green' },
-  { id: 'optics', label: 'Optics Lab', color: 'pink' },
+const learningLevels = [
+  {
+    title: 'Foundation Lab',
+    level: 'Grade 9–10',
+    description: 'Build intuition with motion, energy, and simple force experiments.',
+  },
+  {
+    title: 'Core Concepts',
+    level: 'Grade 11',
+    description: 'Connect equations, graphs, and real-world applications in mechanics and waves.',
+  },
+  {
+    title: 'Advanced Inquiry',
+    level: 'Grade 12 + College',
+    description: 'Explore modern theory, circuits, electronics, and quantitative analysis.',
+  },
 ];
 
-const quickFacts = [
-  { value: '20+', label: 'Concept Simulations' },
-  { value: '6', label: 'Core Physics Domains' },
-  { value: '100%', label: 'Visual Learning' },
-  { value: '9–12+', label: 'Student Friendly' },
+const formulaCards = [
+  { symbol: 'F = ma', label: 'Newton’s second law', description: 'Force equals mass times acceleration.' },
+  { symbol: 'V = IR', label: 'Ohm’s law', description: 'Voltage is proportional to current and resistance.' },
+  { symbol: 'v = fλ', label: 'Wave equation', description: 'Wave speed equals frequency times wavelength.' },
+  { symbol: 'E = mc²', label: 'Mass–energy', description: 'Mass can be converted into energy.' },
 ];
 
-const conceptCards = [
-  { title: 'Force = mass × acceleration', detail: 'Explore how changing mass and net force changes motion.' },
-  { title: 'Energy is conserved', detail: 'Track kinetic, potential, and thermal energy across systems.' },
-  { title: 'Voltage drives current', detail: 'See how circuit components affect current and power.' },
-  { title: 'Wave speed depends on medium', detail: 'Compare frequency, wavelength, and velocity in motion.' },
+const labTabs = [
+  { id: 'motion', label: 'Motion', color: 'cyan' },
+  { id: 'forces', label: 'Forces', color: 'violet' },
+  { id: 'waves', label: 'Waves', color: 'amber' },
+  { id: 'circuits', label: 'Circuits', color: 'green' },
+  { id: 'optics', label: 'Optics', color: 'pink' },
 ];
 
-const challengeCards = [
-  'Build a circuit that lights both bulbs with minimum energy loss.',
-  'Adjust launch angle to maximize projectile range without changing speed.',
-  'Explain how wavelength changes when a sound source moves toward a listener.',
-  'Predict how lens curvature changes the image size and focus.',
-];
-
-const learningPaths = [
-  { title: 'Foundations', description: 'Motion, forces, vectors, and units.', level: 'Beginner' },
-  { title: 'Electric & Magnetic', description: 'Circuits, fields, induction, and current flow.', level: 'Intermediate' },
-  { title: 'Modern Physics', description: 'Atoms, radiation, and the quantum worldview.', level: 'Advanced' },
-];
+const quizOptions = ['Current decreases', 'Current increases', 'Current stays the same', 'Voltage disappears'];
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 function App() {
   const [activeLab, setActiveLab] = useState('motion');
-  const [launchSpeed, setLaunchSpeed] = useState(26);
-  const [launchAngle, setLaunchAngle] = useState(48);
-  const [mass, setMass] = useState(4);
-  const [frequency, setFrequency] = useState(3.5);
-  const [amplitude, setAmplitude] = useState(48);
+  const [launchSpeed, setLaunchSpeed] = useState(30);
+  const [launchAngle, setLaunchAngle] = useState(52);
+  const [mass, setMass] = useState(6);
+  const [frequency, setFrequency] = useState(4.2);
+  const [amplitude, setAmplitude] = useState(52);
   const [voltage, setVoltage] = useState(18);
-  const [resistance, setResistance] = useState(11);
-  const [lensPower, setLensPower] = useState(1.4);
+  const [resistance, setResistance] = useState(12);
+  const [lensPower, setLensPower] = useState(1.8);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
 
   const projectileRange = useMemo(() => {
-    const radians = (launchAngle * Math.PI) / 180;
-    return ((launchSpeed ** 2 * Math.sin(2 * radians)) / 9.8).toFixed(1);
+    const rad = (launchAngle * Math.PI) / 180;
+    return ((launchSpeed ** 2 * Math.sin(2 * rad)) / 9.8).toFixed(1);
   }, [launchSpeed, launchAngle]);
 
+  const force = useMemo(() => (mass * 9.8).toFixed(1), [mass]);
   const current = useMemo(() => (voltage / resistance).toFixed(2), [voltage, resistance]);
   const power = useMemo(() => (voltage * Number(current)).toFixed(2), [voltage, current]);
-  const force = useMemo(() => (mass * 9.8).toFixed(1), [mass]);
   const wavelength = useMemo(() => (340 / frequency).toFixed(2), [frequency]);
   const imageDistance = useMemo(() => (1 / lensPower).toFixed(2), [lensPower]);
+
+  const isCorrectAnswer = selectedOption === 'Current increases';
 
   return (
     <div className="app-shell">
@@ -118,36 +122,45 @@ function App() {
         <nav className="nav-links">
           <a href="#topics">Topics</a>
           <a href="#simulations">Simulations</a>
-          <a href="#concepts">Concepts</a>
-          <a href="#challenges">Challenges</a>
+          <a href="#formulas">Formulas</a>
+          <a href="#quiz">Quiz</a>
         </nav>
 
-        <button className="primary-button small">Start Exploring</button>
+        <button className="primary-button small">Start learning</button>
       </header>
 
       <main>
         <section className="hero section">
           <div className="hero-copy">
             <span className="eyebrow">Learn by doing</span>
-            <h1>Turn physics into an interactive experience.</h1>
+            <h1>Physics that students can see, test, and understand.</h1>
             <p>
-              Explore motion, waves, electricity, optics, and modern physics through real-time
-              simulations, guided explanations, and hands-on challenges designed for students from
-              grades 9 to college level.
+              A modern physics learning website for students from grade 9 to college, built around
+              simulations, guided questions, visuals, and step-by-step concept discovery.
             </p>
 
             <div className="cta-row">
-              <button className="primary-button">Explore Simulations</button>
-              <button className="secondary-button">View Lesson Paths</button>
+              <button className="primary-button">Explore lessons</button>
+              <button className="secondary-button">Try simulations</button>
             </div>
 
             <div className="stats-row">
-              {quickFacts.map((fact) => (
-                <div key={fact.label} className="stat-box">
-                  <strong>{fact.value}</strong>
-                  <span>{fact.label}</span>
-                </div>
-              ))}
+              <div className="stat-box">
+                <strong>20+</strong>
+                <span>hands-on labs</span>
+              </div>
+              <div className="stat-box">
+                <strong>6</strong>
+                <span>core domains</span>
+              </div>
+              <div className="stat-box">
+                <strong>100%</strong>
+                <span>visual learning</span>
+              </div>
+              <div className="stat-box">
+                <strong>9–12+</strong>
+                <span>all levels</span>
+              </div>
             </div>
           </div>
 
@@ -170,18 +183,33 @@ function App() {
           </div>
         </section>
 
+        <section className="section mini-highlight">
+          <div className="mini-card">
+            <div className="mini-label">Built for</div>
+            <h3>Conceptual understanding before formulas</h3>
+          </div>
+          <div className="mini-card">
+            <div className="mini-label">Approach</div>
+            <h3>Explore → test → explain → apply</h3>
+          </div>
+          <div className="mini-card">
+            <div className="mini-label">Goal</div>
+            <h3>Make physics feel intuitive and interactive</h3>
+          </div>
+        </section>
+
         <section id="topics" className="section">
           <div className="section-heading">
             <span className="eyebrow">Study areas</span>
-            <h2>Physics for every level</h2>
+            <h2>Explore the whole physics universe</h2>
           </div>
 
           <div className="topics-grid">
-            {topics.map((topic) => (
+            {topicCards.map((topic) => (
               <article key={topic.id} className={`topic-card ${topic.accent}`}>
                 <div className="topic-icon">{topic.title.slice(0, 1)}</div>
                 <h3>{topic.title}</h3>
-                <p>{topic.description}</p>
+                <p>{topic.summary}</p>
                 <ul>
                   {topic.lessons.map((lesson) => (
                     <li key={lesson}>{lesson}</li>
@@ -192,15 +220,15 @@ function App() {
           </div>
         </section>
 
-        <section className="section lesson-section">
+        <section className="section">
           <div className="section-heading">
-            <span className="eyebrow">Learning path</span>
-            <h2>Build understanding step by step</h2>
+            <span className="eyebrow">Learning pathway</span>
+            <h2>Choose a path by level</h2>
           </div>
 
           <div className="learning-grid">
-            {learningPaths.map((path) => (
-              <div key={path.title} className="learning-card">
+            {learningLevels.map((path) => (
+              <div className="learning-card" key={path.title}>
                 <div className="mini-badge">{path.level}</div>
                 <h3>{path.title}</h3>
                 <p>{path.description}</p>
@@ -212,18 +240,18 @@ function App() {
         <section id="simulations" className="section simulation-section">
           <div className="section-heading">
             <span className="eyebrow">Interactive labs</span>
-            <h2>Experiment with real physics</h2>
+            <h2>Experiment with live data</h2>
           </div>
 
           <div className="lab-layout">
             <div className="lab-tabs">
-              {labs.map((lab) => (
+              {labTabs.map((tab) => (
                 <button
-                  key={lab.id}
-                  className={`lab-tab ${activeLab === lab.id ? 'active' : ''} ${lab.color}`}
-                  onClick={() => setActiveLab(lab.id)}
+                  key={tab.id}
+                  className={`lab-tab ${activeLab === tab.id ? 'active' : ''} ${tab.color}`}
+                  onClick={() => setActiveLab(tab.id)}
                 >
-                  {lab.label}
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -235,8 +263,8 @@ function App() {
                     <span className="chip">Projectile motion</span>
                     <h3>Launch and compare trajectories</h3>
                     <p>
-                      Adjust the launch speed and angle to see how range changes. In ideal conditions,
-                      the projectile range depends on velocity and launch angle.
+                      Change the starting speed and angle to see how range changes. In ideal conditions,
+                      the angle and launch speed control the distance traveled.
                     </p>
                     <div className="metrics">
                       <div>
@@ -263,17 +291,16 @@ function App() {
                   </div>
 
                   <div className="lab-visual motion-visual">
-                    <div className="trajectory-wrap">
-                      <div
-                        className="projectile"
-                        style={{
-                          left: `${clamp((launchSpeed / 50) * 72, 10, 78)}%`,
-                          bottom: `${clamp((launchAngle / 80) * 44, 12, 40)}%`,
-                        }}
-                      />
-                    </div>
+                    <div className="trajectory-grid" />
+                    <div
+                      className="projectile"
+                      style={{
+                        left: `${clamp((launchSpeed / 50) * 72, 10, 78)}%`,
+                        bottom: `${clamp((launchAngle / 80) * 42, 12, 40)}%`,
+                      }}
+                    />
                     <div className="result-box">
-                      <span>Estimated range</span>
+                      <span>Range</span>
                       <strong>{projectileRange} m</strong>
                     </div>
                   </div>
@@ -283,11 +310,11 @@ function App() {
               {activeLab === 'forces' && (
                 <div className="lab-content">
                   <div className="lab-info">
-                    <span className="chip">Newton's second law</span>
-                    <h3>Explore force and acceleration</h3>
+                    <span className="chip">Newton’s law</span>
+                    <h3>See how gravity changes with mass</h3>
                     <p>
-                      The force acting on a body depends on its mass and gravity. This relationship gives
-                      the weight of an object near Earth’s surface.
+                      On Earth, weight depends on gravitational acceleration. By increasing mass, the
+                      force of gravity increases proportionally.
                     </p>
                     <div className="metrics">
                       <div>
@@ -304,7 +331,7 @@ function App() {
                   </div>
 
                   <div className="lab-visual force-visual">
-                    <div className="mass-block-wrap">
+                    <div className="mass-scene">
                       <div className="mass-block" style={{ width: `${10 + mass * 3}px` }} />
                     </div>
                     <div className="result-box">
@@ -319,10 +346,10 @@ function App() {
                 <div className="lab-content">
                   <div className="lab-info">
                     <span className="chip">Wave behavior</span>
-                    <h3>See how frequency changes the wave</h3>
+                    <h3>Observe wavelength and amplitude</h3>
                     <p>
-                      Higher frequency creates shorter wavelengths. Wave speed in air remains roughly
-                      constant, so changing frequency directly changes wavelength.
+                      Higher frequency creates a shorter wavelength when the wave speed is constant. The
+                      amplitude controls how large the wave oscillation becomes.
                     </p>
                     <div className="metrics">
                       <div>
@@ -350,11 +377,11 @@ function App() {
                   </div>
 
                   <div className="lab-visual wave-visual">
-                    <svg viewBox="0 0 500 180" className="wave-svg" aria-label="Wave visualization">
+                    <svg viewBox="0 0 500 180" className="wave-svg" aria-label="Wave simulation">
                       <path
                         d={Array.from({ length: 120 }, (_, i) => {
                           const x = (i / 120) * 500;
-                          const y = 90 + Math.sin((x / 30) * (frequency * 1.2)) * (amplitude / 1.6);
+                          const y = 90 + Math.sin((x / 28) * (frequency * 1.15)) * (amplitude / 1.7);
                           return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
                         }).join(' ')}
                       />
@@ -367,14 +394,14 @@ function App() {
                 </div>
               )}
 
-              {activeLab === 'electricity' && (
+              {activeLab === 'circuits' && (
                 <div className="lab-content">
                   <div className="lab-info">
                     <span className="chip">Circuit analysis</span>
-                    <h3>Understand voltage, resistance, and current</h3>
+                    <h3>Understand voltage, current, and resistance</h3>
                     <p>
-                      In a simple circuit, current is directly proportional to voltage and inversely
-                      proportional to resistance. Use the sliders to explore the relationship.
+                      This simple circuit shows the relationship between voltage, current, and resistance.
+                      Raising the applied voltage increases current if resistance stays the same.
                     </p>
                     <div className="metrics">
                       <div>
@@ -401,10 +428,10 @@ function App() {
                   </div>
 
                   <div className="lab-visual circuit-visual">
-                    <div className="circuit-box">
-                      <span className="bulb" />
-                      <div className="wire wire-h" />
-                      <div className="wire wire-v" />
+                    <div className="circuit-board">
+                      <div className="bulb" />
+                      <div className="wire wire-horizontal" />
+                      <div className="wire wire-vertical" />
                     </div>
                     <div className="result-box">
                       <span>Current / power</span>
@@ -419,11 +446,11 @@ function App() {
               {activeLab === 'optics' && (
                 <div className="lab-content">
                   <div className="lab-info">
-                    <span className="chip">Lens and focus</span>
-                    <h3>See how lens power changes image position</h3>
+                    <span className="chip">Lens system</span>
+                    <h3>See how lens power changes focus</h3>
                     <p>
-                      A stronger lens has a greater power and forms an image closer to the lens. This is a
-                      key idea in optics and imaging systems.
+                      A stronger lens has higher power and forms an image closer to the lens. This is the
+                      basic idea behind cameras, glasses, and microscopes.
                     </p>
                     <div className="metrics">
                       <div>
@@ -441,9 +468,9 @@ function App() {
                   </div>
 
                   <div className="lab-visual optics-visual">
-                    <div className="lens-setup">
-                      <div className="lens" />
-                      <div className="focus-point" />
+                    <div className="lens-scene">
+                      <div className="lens-bar" />
+                      <div className="lens-focus" />
                     </div>
                     <div className="result-box">
                       <span>Image distance</span>
@@ -456,36 +483,53 @@ function App() {
           </div>
         </section>
 
-        <section id="concepts" className="section concept-section">
+        <section id="formulas" className="section">
           <div className="section-heading">
-            <span className="eyebrow">Core ideas</span>
-            <h2>Learn the language of physics</h2>
+            <span className="eyebrow">Key formulas</span>
+            <h2>Connect equations to experiments</h2>
           </div>
 
-          <div className="concept-grid">
-            {conceptCards.map((card) => (
-              <div key={card.title} className="concept-card">
-                <div className="concept-icon">∑</div>
-                <h3>{card.title}</h3>
-                <p>{card.detail}</p>
-              </div>
+          <div className="formula-grid">
+            {formulaCards.map((card) => (
+              <article key={card.symbol} className="formula-card">
+                <div className="formula-symbol">{card.symbol}</div>
+                <h3>{card.label}</h3>
+                <p>{card.description}</p>
+              </article>
             ))}
           </div>
         </section>
 
-        <section id="challenges" className="section challenge-section">
+        <section id="quiz" className="section quiz-section">
           <div className="section-heading">
-            <span className="eyebrow">Problem solving</span>
-            <h2>Try a quick challenge</h2>
+            <span className="eyebrow">Quick check</span>
+            <h2>Can you reason through the science?</h2>
           </div>
 
-          <div className="challenge-grid">
-            {challengeCards.map((challenge) => (
-              <div key={challenge} className="challenge-card">
-                <div className="mini-badge">Challenge</div>
-                <p>{challenge}</p>
+          <div className="quiz-card">
+            <h3>If the resistance in a circuit stays the same but the voltage increases, what happens to the current?</h3>
+            <div className="quiz-options">
+              {quizOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`quiz-option ${selectedOption === option ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSelectedOption(option);
+                    setQuizSubmitted(true);
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+
+            {quizSubmitted && (
+              <div className={`quiz-result ${isCorrectAnswer ? 'correct' : 'wrong'}`}>
+                {isCorrectAnswer
+                  ? 'Correct! Higher voltage pushes more current through the same resistance.'
+                  : 'Not quite — with constant resistance, increasing voltage increases current.'}
               </div>
-            ))}
+            )}
           </div>
         </section>
       </main>
