@@ -74,6 +74,12 @@ const challengeCards = [
   'Predict how lens curvature changes the image size and focus.',
 ];
 
+const learningPaths = [
+  { title: 'Foundations', description: 'Motion, forces, vectors, and units.', level: 'Beginner' },
+  { title: 'Electric & Magnetic', description: 'Circuits, fields, induction, and current flow.', level: 'Intermediate' },
+  { title: 'Modern Physics', description: 'Atoms, radiation, and the quantum worldview.', level: 'Advanced' },
+];
+
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 function App() {
@@ -182,6 +188,23 @@ function App() {
                   ))}
                 </ul>
               </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section lesson-section">
+          <div className="section-heading">
+            <span className="eyebrow">Learning path</span>
+            <h2>Build understanding step by step</h2>
+          </div>
+
+          <div className="learning-grid">
+            {learningPaths.map((path) => (
+              <div key={path.title} className="learning-card">
+                <div className="mini-badge">{path.level}</div>
+                <h3>{path.title}</h3>
+                <p>{path.description}</p>
+              </div>
             ))}
           </div>
         </section>
