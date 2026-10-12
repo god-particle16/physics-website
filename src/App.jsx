@@ -80,6 +80,111 @@ const labTabs = [
 
 const quizOptions = ['Current decreases', 'Current increases', 'Current stays the same', 'Voltage disappears'];
 
+const simulations = [
+  {
+    id: 'projectile',
+    name: 'Projectile Motion',
+    topic: 'Mechanics',
+    level: 'High school',
+    description: 'Explore launch angle, speed and the range of a projectile in real time.',
+    status: 'Live',
+    accent: 'cyan',
+  },
+  {
+    id: 'energy-skate',
+    name: 'Energy Skate Park',
+    topic: 'Mechanics',
+    level: 'Middle & high school',
+    description: 'Track kinetic, potential and thermal energy as a skater moves through a ramp.',
+    status: 'Popular',
+    accent: 'violet',
+  },
+  {
+    id: 'gravity',
+    name: 'Gravity Force Lab',
+    topic: 'Astronomy',
+    level: 'High school',
+    description: 'Compare gravitational pull between objects as mass and distance change.',
+    status: 'New',
+    accent: 'amber',
+  },
+  {
+    id: 'circuit-builder',
+    name: 'Circuit Builder',
+    topic: 'Electricity',
+    level: 'All levels',
+    description: 'Build a circuit and observe how voltage, resistance and current interact.',
+    status: 'Live',
+    accent: 'green',
+  },
+  {
+    id: 'wave-lab',
+    name: 'Wave Lab',
+    topic: 'Waves',
+    level: 'High school',
+    description: 'Adjust frequency and amplitude to visualize wavelength and interference.',
+    status: 'Live',
+    accent: 'pink',
+  },
+  {
+    id: 'optics-lab',
+    name: 'Refraction Lab',
+    topic: 'Optics',
+    level: 'High school',
+    description: 'Change lens power and observe how image formation shifts with focus.',
+    status: 'Popular',
+    accent: 'red',
+  },
+  {
+    id: 'collision-lab',
+    name: 'Collision Lab',
+    topic: 'Momentum',
+    level: 'Advanced',
+    description: 'Test elastic and inelastic collisions with variable mass and velocity.',
+    status: 'Advanced',
+    accent: 'cyan',
+  },
+  {
+    id: 'pendulum',
+    name: 'Pendulum Lab',
+    topic: 'Oscillations',
+    level: 'High school',
+    description: 'Measure how length and gravity influence period and motion.',
+    status: 'Live',
+    accent: 'violet',
+  },
+];
+
+const teacherResources = [
+  {
+    title: 'Lesson plans',
+    description: 'Ready-to-use inquiry activities tied to core physics standards.',
+    type: 'PDF',
+  },
+  {
+    title: 'Student worksheets',
+    description: 'Printable question sets with data tables and reflection prompts.',
+    type: 'Download',
+  },
+  {
+    title: 'Lab guides',
+    description: 'Step-by-step experiment instructions for classroom and home learning.',
+    type: 'Guide',
+  },
+  {
+    title: 'Assessment rubrics',
+    description: 'Quick scoring tools for understanding, analysis and scientific reasoning.',
+    type: 'Checklist',
+  },
+];
+
+const curriculumPillars = [
+  'Interactive inquiry-based learning',
+  'Visual conceptual explanations',
+  'Teacher-ready classroom activities',
+  'Accessible, self-paced experimentation',
+];
+
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 function App() {
@@ -94,6 +199,9 @@ function App() {
   const [lensPower, setLensPower] = useState(1.8);
   const [selectedOption, setSelectedOption] = useState(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [selectedSimulation, setSelectedSimulation] = useState(simulations[0]);
+  const [filterQuery, setFilterQuery] = useState('');
+  const [topicFilter, setTopicFilter] = useState('All');
 
   const projectileRange = useMemo(() => {
     const rad = (launchAngle * Math.PI) / 180;
@@ -105,8 +213,20 @@ function App() {
   const power = useMemo(() => (voltage * Number(current)).toFixed(2), [voltage, current]);
   const wavelength = useMemo(() => (340 / frequency).toFixed(2), [frequency]);
   const imageDistance = useMemo(() => (1 / lensPower).toFixed(2), [lensPower]);
-
   const isCorrectAnswer = selectedOption === 'Current increases';
+
+  const filteredSims = useMemo(() => {
+    const normalized = filterQuery.trim().toLowerCase();
+    return simulations.filter((sim) => {
+      const matchesQuery =
+        !normalized ||
+        sim.name.toLowerCase().includes(normalized) ||
+        sim.topic.toLowerCase().includes(normalized) ||
+        sim.description.toLowerCase().includes(normalized);
+      const matchesTopic = topicFilter === 'All' || sim.topic === topicFilter;
+      return matchesQuery && matchesTopic;
+    });
+  }, [filterQuery, topicFilter]);
 
   return (
     <div className="app-shell">
@@ -122,6 +242,7 @@ function App() {
         <nav className="nav-links">
           <a href="#topics">Topics</a>
           <a href="#simulations">Simulations</a>
+          <a href="#resources">Resources</a>
           <a href="#formulas">Formulas</a>
           <a href="#quiz">Quiz</a>
         </nav>
@@ -150,8 +271,8 @@ function App() {
                 <span>hands-on labs</span>
               </div>
               <div className="stat-box">
-                <strong>6</strong>
-                <span>core domains</span>
+                <strong>8</strong>
+                <span>simulation types</span>
               </div>
               <div className="stat-box">
                 <strong>100%</strong>
@@ -237,7 +358,96 @@ function App() {
           </div>
         </section>
 
+        <section className="section">
+          <div className="section-heading">
+            <span className="eyebrow">Learning system</span>
+            <h2>Designed for classroom-ready discovery</h2>
+          </div>
+
+          <div className="pillar-grid">
+            {curriculumPillars.map((pillar) => (
+              <div key={pillar} className="pillar-card">
+                <div className="pillar-icon">✓</div>
+                <p>{pillar}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="simulations" className="section simulation-section">
+          <div className="section-heading">
+            <span className="eyebrow">Simulation library</span>
+            <h2>Browse and explore a PhET-style catalog</h2>
+          </div>
+
+          <div className="sim-catalog">
+            <div className="sim-toolbar">
+              <input
+                type="text"
+                placeholder="Search simulations"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+              />
+              <select value={topicFilter} onChange={(e) => setTopicFilter(e.target.value)}>
+                <option value="All">All topics</option>
+                {['Mechanics', 'Electricity', 'Waves', 'Astronomy', 'Optics', 'Momentum', 'Oscillations'].map((topic) => (
+                  <option key={topic} value={topic}>{topic}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="sim-layout">
+              <div className="sim-list">
+                {filteredSims.map((sim) => (
+                  <button
+                    key={sim.id}
+                    className={`sim-item ${selectedSimulation.id === sim.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedSimulation(sim)}
+                  >
+                    <span className={`sim-tag ${sim.accent}`}>{sim.status}</span>
+                    <strong>{sim.name}</strong>
+                    <small>{sim.topic}</small>
+                  </button>
+                ))}
+                {filteredSims.length === 0 && <div className="empty-state">No simulations match your search.</div>}
+              </div>
+
+              <div className="sim-detail">
+                <div className="sim-detail-header">
+                  <div>
+                    <span className="mini-badge light">{selectedSimulation.topic}</span>
+                    <h3>{selectedSimulation.name}</h3>
+                  </div>
+                  <span className={`sim-tag ${selectedSimulation.accent}`}>{selectedSimulation.level}</span>
+                </div>
+
+                <p>{selectedSimulation.description}</p>
+
+                <div className="sim-metric-grid">
+                  <div className="mini-stat">
+                    <span>Students</span>
+                    <strong>1,000+</strong>
+                  </div>
+                  <div className="mini-stat">
+                    <span>Concepts</span>
+                    <strong>4</strong>
+                  </div>
+                  <div className="mini-stat">
+                    <span>Mode</span>
+                    <strong>Live</strong>
+                  </div>
+                </div>
+
+                <div className="sim-actions">
+                  <button className="primary-button">Launch activity</button>
+                  <button className="secondary-button">Download worksheet</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section simulation-section">
           <div className="section-heading">
             <span className="eyebrow">Interactive labs</span>
             <h2>Experiment with live data</h2>
@@ -480,6 +690,23 @@ function App() {
                 </div>
               )}
             </div>
+          </div>
+        </section>
+
+        <section id="resources" className="section">
+          <div className="section-heading">
+            <span className="eyebrow">Teacher resources</span>
+            <h2>Classroom-ready materials for immersive learning</h2>
+          </div>
+
+          <div className="resource-grid">
+            {teacherResources.map((resource) => (
+              <article className="resource-card" key={resource.title}>
+                <div className="resource-badge">{resource.type}</div>
+                <h3>{resource.title}</h3>
+                <p>{resource.description}</p>
+              </article>
+            ))}
           </div>
         </section>
 
