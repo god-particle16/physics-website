@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "Interactive physics education platform for students (grade 9-12 and college level)",
   "type": "module",
+  "homepage": "https://god-particle16.github.io/physics-website",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write src"
@@ -33,6 +36,7 @@
     "postcss": "^8.4.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.55.0",
-    "prettier": "^3.1.0"
+    "prettier": "^3.1.0",
+    "gh-pages": "^6.0.0"
   }
 }
