@@ -19,7 +19,7 @@
     "zustand": "^4.4.0",
     "framer-motion": "^10.16.0",
     "three": "^0.158.0",
-    "react-three-fiber": "^8.15.0",
+    "@react-three/fiber": "^9.8.1",
     "@react-three/drei": "^9.88.0",
     "recharts": "^2.10.0",
     "axios": "^1.6.0",
